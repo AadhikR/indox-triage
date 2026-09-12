@@ -12,6 +12,8 @@ const replyModel = read("../lib/hover-reply.ts");
 
 assert.equal(manifest.manifest_version, 3);
 assert.equal(manifest.version, "0.2.0");
+assert.equal(manifest.name, "Inbox Triage");
+assert.equal(manifest.action.default_title, "Inbox Triage");
 assert.ok(manifest.permissions.includes("storage"));
 assert.ok(manifest.host_permissions.includes("https://mail.google.com/*"));
 assert.ok(manifest.host_permissions.includes("http://localhost:3000/*"));

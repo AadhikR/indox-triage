@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         "HTTP-Referer": "https://github.com/AadhikR/indox-triage",
-        "X-Title": "Inbox Triage Hover",
+        "X-Title": "Inbox Triage",
       },
       body: JSON.stringify(buildHoverRequest(input, model)),
       signal: AbortSignal.timeout(8_000),

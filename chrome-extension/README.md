@@ -1,4 +1,4 @@
-# Inbox Triage Hover extension
+# Inbox Triage extension
 
 This optional Chrome extension adds the inbox-row hover interaction that Gmail
 Workspace Add-ons cannot provide. It reads only the sender, subject, and snippet

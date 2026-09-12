@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Inbox Triage Hover",
+  "name": "Inbox Triage",
   "description": "Shows attention previews and editable AI quick replies inside Gmail.",
   "version": "0.2.0",
   "icons": {
@@ -26,7 +26,7 @@
     }
   ],
   "action": {
-    "default_title": "Inbox Triage Hover",
+    "default_title": "Inbox Triage",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png"
