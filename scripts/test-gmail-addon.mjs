@@ -41,5 +41,6 @@ assert.equal(request.model, "test/model");
 assert.equal(request.response_format.type, "json_schema");
 assert.equal(request.response_format.json_schema.strict, true);
 assert.equal(typeof sandbox.resetIndoxAuthorization, "function");
+assert.equal(typeof sandbox.authorizeIndoxExternalRequests, "function");
 
 console.log("Gmail add-on checks passed.");

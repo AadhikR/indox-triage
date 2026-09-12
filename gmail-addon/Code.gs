@@ -472,3 +472,19 @@ function escapeCardText(value) {
 function resetIndoxAuthorization() {
   ScriptApp.invalidateAuth();
 }
+
+/**
+ * Forces Apps Script to request the external-request OAuth scope.
+ *
+ * After resetIndoxAuthorization has run, select this function in the Apps
+ * Script editor and run it once. The public models endpoint is used so no
+ * email data or API key is sent during authorization.
+ */
+function authorizeIndoxExternalRequests() {
+  var response = UrlFetchApp.fetch("https://openrouter.ai/api/v1/models", {
+    method: "get",
+    muteHttpExceptions: true
+  });
+
+  console.log("External request authorization check returned status " + response.getResponseCode() + ".");
+}
