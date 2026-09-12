@@ -34,6 +34,7 @@ a { color: inherit; text-decoration: none; }
 
 .landing-shell { min-height: 100vh; overflow: hidden; background: radial-gradient(circle at 80% 20%, rgba(240, 163, 74, .16), transparent 24rem), var(--paper); }
 .landing-nav { display: flex; width: min(1180px, calc(100% - 3rem)); align-items: center; justify-content: space-between; margin: 0 auto; padding: 1.5rem 0; }
+.landing-nav-actions { display: flex; align-items: center; gap: .6rem; }
 .hero { display: grid; width: min(1180px, calc(100% - 3rem)); min-height: 67vh; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(3rem, 7vw, 7rem); margin: 0 auto; padding: 4rem 0 5rem; }
 .eyebrow { margin: 0 0 .75rem; color: #7c6243; font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .hero h1 { max-width: 720px; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.1rem, 6vw, 5.6rem); font-weight: 500; letter-spacing: -.055em; line-height: .98; }
@@ -73,7 +74,26 @@ a { color: inherit; text-decoration: none; }
 .connection-card strong, .user-chip strong { font-size: .85rem; }
 .connection-card span:last-child, .user-chip span:last-child { color: #8995a8; font-size: .72rem; }
 .connection-dot { width: .65rem; height: .65rem; border-radius: 50%; background: #7f8a96; }
-.user-chip { padding: .6rem; }
+.user-chip { border-radius: .7rem; padding: .6rem; transition: background 160ms ease; }
+.user-chip:hover { background: rgba(255, 255, 255, .055); }
+.avatar-image { display: block; object-fit: cover; }
+
+.login-shell { display: grid; min-height: 100vh; grid-template-columns: minmax(0, 1.05fr) minmax(360px, .65fr); background: var(--surface); }
+.login-card { display: flex; width: min(560px, calc(100% - 3rem)); flex-direction: column; justify-content: center; margin: 0 auto; padding: 3rem 0; }
+.login-copy { margin: 4.5rem 0 2rem; }
+.login-copy h1 { max-width: 520px; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.8rem, 5vw, 4.6rem); font-weight: 500; letter-spacing: -.05em; line-height: 1; }
+.login-copy > p:last-child { max-width: 520px; margin: 1.3rem 0 0; color: var(--muted); font-size: 1rem; line-height: 1.7; }
+.login-footnote { margin: .85rem 0 0; color: var(--muted); font-size: .8rem; text-align: center; }
+.login-back { align-self: center; margin-top: 2rem; color: var(--muted); font-size: .85rem; font-weight: 650; }
+.setup-panel { border: 1px solid #e4d2ba; border-radius: 1rem; padding: 1.2rem; background: #fff8ee; }
+.setup-panel p { margin: .55rem 0 1rem; color: #6f614f; font-size: .88rem; line-height: 1.6; }
+.setup-panel code { border-radius: .25rem; padding: .08rem .28rem; color: var(--navy); background: #efe6da; font-size: .78rem; }
+.setup-label { color: #8b6536; font-size: .7rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+.login-context { display: flex; flex-direction: column; justify-content: center; padding: clamp(3rem, 7vw, 7rem); color: #e7ebf1; background: var(--navy); }
+.login-context h2 { max-width: 440px; margin: .8rem 0 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.1; }
+.login-context p { max-width: 440px; margin: .9rem 0 0; color: #aeb8c8; line-height: 1.7; }
+.context-number { color: var(--accent); font-size: .72rem; font-weight: 850; letter-spacing: .12em; }
+.context-divider { width: 100%; height: 1px; margin: 2.5rem 0; background: #33425d; }
 
 .workspace { min-width: 0; padding: 2.2rem clamp(1.25rem, 4vw, 4rem) 3rem; }
 .workspace-header { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
@@ -143,10 +163,13 @@ a { color: inherit; text-decoration: none; }
   .sidebar-bottom { display: none; }
   .workspace { padding: 1.5rem 1rem 2rem; }
   .banner-time { margin-left: 3.5rem; }
+  .login-shell { grid-template-columns: 1fr; }
+  .login-card { min-height: 100vh; }
+  .login-context { padding: 3rem 1.5rem; }
 }
 
 @media (max-width: 520px) {
-  .landing-nav .button { display: none; }
+  .landing-nav .button-secondary { display: none; }
   .hero h1 { font-size: 3rem; }
   .sidebar-nav { grid-template-columns: 1fr; }
   .nav-item:not(.nav-item-active) { display: none; }

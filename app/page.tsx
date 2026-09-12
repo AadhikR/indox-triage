@@ -15,7 +15,10 @@ export default function Home() {
           <span className="brand-mark">I</span>
           <span>Indox</span>
         </Link>
-        <Link className="button button-secondary" href="/dashboard">View demo</Link>
+        <div className="landing-nav-actions">
+          <Link className="button button-secondary" href="/dashboard">View demo</Link>
+          <Link className="button button-dark" href="/login">Sign in</Link>
+        </div>
       </nav>
 
       <section className="hero">
@@ -27,8 +30,8 @@ export default function Home() {
             and gives you the next action—not another pile of summaries.
           </p>
           <div className="hero-actions">
-            <Link className="button button-primary" href="/dashboard">
-              Explore the triage workspace <span aria-hidden="true">→</span>
+            <Link className="button button-primary" href="/login">
+              Get started securely <span aria-hidden="true">→</span>
             </Link>
             <span className="privacy-note">Nothing is sent without your approval.</span>
           </div>

@@ -26,7 +26,27 @@ Copy `.env.example` to `.env.local` before adding integrations. Never commit rea
 
 ## Planned integrations
 
-- Auth0 for secure sign-in
+- Auth0 for secure sign-in (implemented; requires local credentials)
 - Gmail API for message and thread access
 - OpenRouter for inbox analysis
 - Gmail draft creation after user approval
+
+## Auth0 setup
+
+Create an Auth0 **Regular Web Application**, then add these URLs in its settings:
+
+- Allowed Callback URL: `http://localhost:3000/auth/callback`
+- Allowed Logout URL: `http://localhost:3000`
+- Allowed Web Origin: `http://localhost:3000`
+
+Copy `.env.example` to `.env.local` and fill in `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`,
+`AUTH0_CLIENT_SECRET`, and a 64-character hexadecimal `AUTH0_SECRET`. With these
+values present, `/dashboard` is protected automatically. Without them, the app
+stays available in clearly labelled demo mode for development.
+
+## Gmail sidebar direction
+
+The user-facing agent will live in Gmail's contextual side panel. The Next.js app
+acts as the secure account and analysis backend; the Gmail Workspace Add-on will
+pass the currently open message ID to this backend and render the returned priority,
+thread summary, deadline, and next action in Gmail's native card interface.

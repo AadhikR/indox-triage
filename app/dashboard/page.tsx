@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useAppUser } from "@/components/auth-state";
 
 type Priority = "Urgent" | "Attention required" | "Moderate" | "Take your time";
 
@@ -30,10 +31,17 @@ const filters: Array<"All" | Priority> = ["All", "Urgent", "Attention required",
 const priorityClass = (priority: Priority) => `priority-${priority.toLowerCase().replaceAll(" ", "-")}`;
 
 export default function Dashboard() {
+  const user = useAppUser();
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
   const [selectedId, setSelectedId] = useState(emails[0].id);
   const visibleEmails = useMemo(() => filter === "All" ? emails : emails.filter((email) => email.priority === filter), [filter]);
   const selected = emails.find((email) => email.id === selectedId) ?? emails[0];
+  const initials = user.name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
     <main className="app-shell">
@@ -46,7 +54,19 @@ export default function Dashboard() {
         </nav>
         <div className="sidebar-bottom">
           <div className="connection-card"><span className="connection-dot" /><div><strong>Demo inbox</strong><span>Connection comes in Part 3</span></div></div>
-          <div className="user-chip"><span className="avatar avatar-user">AK</span><div><strong>Aadhi</strong><span>Hackathon workspace</span></div></div>
+          <Link className="user-chip" href={user.isDemo ? "/login" : "/auth/logout"}>
+            {user.picture ? (
+              // Auth0 profile images are supplied by the configured identity provider.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="avatar avatar-image" src={user.picture} alt="" />
+            ) : (
+              <span className="avatar avatar-user">{initials}</span>
+            )}
+            <div>
+              <strong>{user.name}</strong>
+              <span>{user.isDemo ? "Configure Auth0" : user.email}</span>
+            </div>
+          </Link>
         </div>
       </aside>
 
