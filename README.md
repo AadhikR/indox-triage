@@ -27,7 +27,7 @@ Copy `.env.example` to `.env.local` before adding integrations. Never commit rea
 ## Planned integrations
 
 - Auth0 for secure sign-in (implemented; requires local credentials)
-- Gmail API for message and thread access
+- Gmail Workspace Add-on for native current-thread access (implemented)
 - OpenRouter for inbox analysis
 - Gmail draft creation after user approval
 
@@ -50,3 +50,7 @@ The user-facing agent will live in Gmail's contextual side panel. The Next.js ap
 acts as the secure account and analysis backend; the Gmail Workspace Add-on will
 pass the currently open message ID to this backend and render the returned priority,
 thread summary, deadline, and next action in Gmail's native card interface.
+
+The installable Apps Script source is in [`gmail-addon`](./gmail-addon). Follow
+that folder's README to create a test deployment in your Gmail account. Google
+Marketplace publication is not required for local hackathon testing.

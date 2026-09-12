@@ -53,7 +53,10 @@ export default function Dashboard() {
           <button className="nav-item" type="button"><span className="nav-glyph">⌁</span> Commitments</button>
         </nav>
         <div className="sidebar-bottom">
-          <div className="connection-card"><span className="connection-dot" /><div><strong>Demo inbox</strong><span>Connection comes in Part 3</span></div></div>
+          <Link className="connection-card" href="/gmail-addon">
+            <span className="connection-dot connection-dot-ready" />
+            <div><strong>Gmail add-on ready</strong><span>Test installation required</span></div>
+          </Link>
           <Link className="user-chip" href={user.isDemo ? "/login" : "/auth/logout"}>
             {user.picture ? (
               // Auth0 profile images are supplied by the configured identity provider.

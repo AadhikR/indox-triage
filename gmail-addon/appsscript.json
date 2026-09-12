@@ -1,0 +1,31 @@
+{
+  "timeZone": "Asia/Dubai",
+  "dependencies": {},
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/gmail.addons.execute",
+    "https://www.googleapis.com/auth/gmail.addons.current.message.readonly"
+  ],
+  "addOns": {
+    "common": {
+      "name": "Indox Triage",
+      "logoUrl": "https://raw.githubusercontent.com/AadhikR/indox-triage/main/public/favicon.svg",
+      "layoutProperties": {
+        "primaryColor": "#17233a",
+        "secondaryColor": "#f0a34a"
+      },
+      "homepageTrigger": {
+        "runFunction": "onHomepage"
+      }
+    },
+    "gmail": {
+      "contextualTriggers": [
+        {
+          "unconditional": {},
+          "onTriggerFunction": "onGmailMessageOpen"
+        }
+      ]
+    }
+  }
+}
