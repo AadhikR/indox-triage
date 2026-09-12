@@ -20,6 +20,10 @@ assert.equal(sandbox.classifyThreadHeuristically(context("This is urgent. Please
 assert.equal(sandbox.classifyThreadHeuristically(context("Could you please confirm the revised quote?")).priority, "ATTENTION_REQUIRED");
 assert.equal(sandbox.classifyThreadHeuristically(context("Notes for next month's workshop.")).priority, "MODERATE");
 assert.equal(sandbox.classifyThreadHeuristically(context("Weekly newsletter. Unsubscribe here.", "no-reply@example.com")).priority, "TAKE_YOUR_TIME");
+assert.equal(
+  sandbox.classifyThreadHeuristically(context("Please verify your device with this verification code.", "no-reply@example.com")).priority,
+  "URGENT",
+);
 assert.equal(sandbox.cleanMessageBody("New reply\n\nOn Friday, Person wrote:\n> Old reply"), "New reply");
 assert.ok(sandbox.summarizeMessage("x".repeat(300)).length <= 221);
 assert.equal(sandbox.escapeCardText("<script>&\"'"), "&lt;script&gt;&amp;&quot;&#39;");
@@ -35,6 +39,9 @@ const normalized = sandbox.normalizeAiAnalysis({
 assert.equal(normalized.label, "Attention required");
 assert.equal(normalized.source, "AI analysis");
 assert.equal(normalized.commitments.length, 1);
+assert.equal(sandbox.getAnalysisStatus("AI analysis").label, "AI analysis active");
+assert.match(sandbox.getAnalysisStatus("Local fallback — AI unavailable").label, /fallback active/);
+assert.equal(sandbox.analyzeThread(context("Example")).source, "Local fallback — AI not configured");
 
 const request = sandbox.buildOpenRouterRequest(context("Please review this by Friday."), "test/model");
 assert.equal(request.model, "test/model");
@@ -42,5 +49,7 @@ assert.equal(request.response_format.type, "json_schema");
 assert.equal(request.response_format.json_schema.strict, true);
 assert.equal(typeof sandbox.resetIndoxAuthorization, "function");
 assert.equal(typeof sandbox.authorizeIndoxExternalRequests, "function");
+assert.equal(typeof sandbox.reanalyzeCurrentThread, "function");
+assert.match(source, /setFunctionName\("reanalyzeCurrentThread"\)/);
 
 console.log("Gmail add-on checks passed.");

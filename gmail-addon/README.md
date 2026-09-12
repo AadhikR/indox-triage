@@ -13,6 +13,8 @@ panel instead of a separate chat interface.
 - Uses OpenRouter structured output when an API key is configured
 - Assigns one of four attention levels
 - Shows a short summary, reason, and next action in a native Gmail card
+- Supports user-controlled re-analysis without leaving Gmail
+- Makes AI, fallback, and error states explicit
 - Escapes email content before rendering it
 - Falls back to deterministic local triage if OpenRouter is unavailable
 
