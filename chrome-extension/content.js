@@ -44,8 +44,9 @@
     const subject = row.querySelector(".bog");
     const subjectRect = subject?.getBoundingClientRect();
     const width = Math.min(320, window.innerWidth - 24);
+    const titleAnchor = subjectRect?.left || rowRect.left + Math.min(260, rowRect.width * 0.32);
     const left = Math.min(
-      Math.max(12, (subjectRect?.left || rowRect.left) - 8),
+      Math.max(12, titleAnchor - 120),
       window.innerWidth - width - 12,
     );
     const cardHeight = Math.max(element.offsetHeight, 230);

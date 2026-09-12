@@ -23,6 +23,7 @@ assert.match(background, /inboxTriageHoverCacheV2/);
 assert.match(background, /data\.source === "ai"/);
 assert.match(content, /HOVER_DELAY_MS = 450/);
 assert.match(content, /subject\?\.getBoundingClientRect\(\)/);
+assert.match(content, /titleAnchor - 120/);
 assert.match(content, /rowRect\.bottom \+ 8/);
 assert.match(content, /textContent/);
 assert.doesNotMatch(content, /innerHTML/);
