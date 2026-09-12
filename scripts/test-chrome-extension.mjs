@@ -20,6 +20,8 @@ new vm.Script(content, { filename: "content.js" });
 assert.match(background, /http:\/\/localhost:3000\/api\/hover-triage/);
 assert.match(background, /crypto\.subtle\.digest/);
 assert.match(content, /HOVER_DELAY_MS = 450/);
+assert.match(content, /subject\?\.getBoundingClientRect\(\)/);
+assert.match(content, /rowRect\.bottom \+ 8/);
 assert.match(content, /textContent/);
 assert.doesNotMatch(content, /innerHTML/);
 assert.match(styles, /inbox-triage-hover-visible/);

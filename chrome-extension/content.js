@@ -40,13 +40,19 @@
 
   function placeCard(row) {
     const element = ensureCard();
-    const rect = row.getBoundingClientRect();
-    const width = Math.min(340, window.innerWidth - 24);
-    const preferredLeft = rect.right + 12;
-    const left = preferredLeft + width <= window.innerWidth - 12
-      ? preferredLeft
-      : Math.max(12, rect.right - width);
-    const top = Math.min(Math.max(12, rect.top - 6), window.innerHeight - 300);
+    const rowRect = row.getBoundingClientRect();
+    const subject = row.querySelector(".bog");
+    const subjectRect = subject?.getBoundingClientRect();
+    const width = Math.min(320, window.innerWidth - 24);
+    const left = Math.min(
+      Math.max(12, (subjectRect?.left || rowRect.left) - 8),
+      window.innerWidth - width - 12,
+    );
+    const cardHeight = Math.max(element.offsetHeight, 230);
+    const belowRow = rowRect.bottom + 8;
+    const top = belowRow + cardHeight <= window.innerHeight - 12
+      ? belowRow
+      : Math.max(12, rowRect.top - cardHeight - 8);
 
     element.style.width = `${width}px`;
     element.style.left = `${left}px`;
