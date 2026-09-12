@@ -6,6 +6,7 @@
   const ROW_SELECTOR = "tr.zA";
   let activeRow = null;
   let hoverTimer = null;
+  let hideTimer = null;
   let requestNumber = 0;
   let card = null;
 
@@ -19,8 +20,10 @@
   function ensureCard() {
     if (card && card.isConnected) return card;
     card = make("aside", "inbox-triage-hover-card");
-    card.setAttribute("role", "status");
-    card.setAttribute("aria-live", "polite");
+    card.setAttribute("role", "dialog");
+    card.setAttribute("aria-label", "Inbox Triage preview");
+    card.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+    card.addEventListener("mouseleave", scheduleHide);
     document.body.appendChild(card);
     return card;
   }
@@ -89,14 +92,38 @@
     const priority = make("div", "inbox-triage-hover-priority");
     priority.append(make("span", ""), document.createTextNode(result.label || "Can wait"));
 
+    const details = make("div", "inbox-triage-hover-details");
+    const action = make("div", "inbox-triage-hover-detail");
+    action.append(
+      make("span", "", "Recommended action"),
+      make("p", "", result.action || "Open the thread to decide the next action."),
+    );
+    details.append(action);
+
+    if (result.deadline && !/^none(?: detected)?$/i.test(result.deadline.trim())) {
+      const deadline = make("div", "inbox-triage-hover-detail inbox-triage-hover-deadline");
+      deadline.append(make("span", "", "Deadline"), make("p", "", result.deadline));
+      details.append(deadline);
+    }
+
     const footer = make("div", "inbox-triage-hover-footer");
-    footer.append(make("span", "", payload.sender || "Unknown sender"), make("span", "", "Open email for full context →"));
+    const openButton = make("button", "inbox-triage-hover-open", "Open email for full context →");
+    openButton.type = "button";
+    openButton.addEventListener("click", () => {
+      const target = row.querySelector(".bog") || row;
+      if (target instanceof HTMLElement) target.click();
+      activeRow = null;
+      requestNumber += 1;
+      hideCard();
+    });
+    footer.append(make("span", "", payload.sender || "Unknown sender"), openButton);
 
     element.append(
       header,
       priority,
       make("p", "inbox-triage-hover-summary", result.summary || payload.snippet || payload.subject),
       make("p", "inbox-triage-hover-reason", result.reason || "Open the thread for complete analysis."),
+      details,
       footer,
     );
     placeCard(row);
@@ -113,6 +140,15 @@
 
   function hideCard() {
     if (card) card.classList.remove("inbox-triage-hover-visible");
+  }
+
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      activeRow = null;
+      requestNumber += 1;
+      hideCard();
+    }, 180);
   }
 
   async function requestAnalysis(row, payload) {
@@ -133,6 +169,7 @@
     const row = event.target instanceof Element ? event.target.closest(ROW_SELECTOR) : null;
     if (!row || row === activeRow) return;
 
+    clearTimeout(hideTimer);
     activeRow = row;
     clearTimeout(hoverTimer);
     hideCard();
@@ -146,12 +183,17 @@
     const related = event.relatedTarget;
     if (related instanceof Node && activeRow.contains(related)) return;
     if (event.target instanceof Node && !activeRow.contains(event.target)) return;
+    if (related instanceof Node && card?.contains(related)) return;
 
     clearTimeout(hoverTimer);
+    scheduleHide();
+  }, true);
+
+  window.addEventListener("scroll", () => {
+    clearTimeout(hoverTimer);
+    clearTimeout(hideTimer);
     activeRow = null;
     requestNumber += 1;
     hideCard();
   }, true);
-
-  window.addEventListener("scroll", hideCard, true);
 })();

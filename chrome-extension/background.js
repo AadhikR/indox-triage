@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:3000/api/hover-triage";
-const CACHE_KEY = "inboxTriageHoverCacheV2";
+const CACHE_KEY = "inboxTriageHoverCacheV3";
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const CACHE_LIMIT = 80;
 
