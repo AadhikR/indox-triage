@@ -17,6 +17,16 @@ assert.ok(manifest.host_permissions.includes("https://mail.google.com/*"));
 assert.ok(manifest.host_permissions.includes("http://localhost:3000/*"));
 assert.deepEqual(manifest.content_scripts[0].matches, ["https://mail.google.com/*"]);
 assert.equal(manifest.background.service_worker, "background.js");
+assert.equal(manifest.icons[16], "icons/icon-16.png");
+assert.equal(manifest.icons[128], "icons/icon-128.png");
+assert.equal(manifest.action.default_icon[32], "icons/icon-32.png");
+
+for (const size of [16, 32, 48, 128]) {
+  const icon = fs.readFileSync(new URL(`../chrome-extension/icons/icon-${size}.png`, import.meta.url));
+  assert.deepEqual([...icon.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  assert.equal(icon.readUInt32BE(16), size);
+  assert.equal(icon.readUInt32BE(20), size);
+}
 
 new vm.Script(background, { filename: "background.js" });
 new vm.Script(content, { filename: "content.js" });
