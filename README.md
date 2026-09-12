@@ -4,6 +4,93 @@ Inbox Triage is a Gmail-native attention agent that helps people understand whic
 
 > **One-line pitch:** Inbox Triage turns every open Gmail thread into a clear decision: how urgently it needs you, why, and what to do next.
 
+## Use the Chrome extension
+
+### 1. Install the local service
+
+You need a current Node.js LTS release and Google Chrome. Clone the repository,
+install its dependencies, and create your local environment file:
+
+```bash
+git clone https://github.com/AadhikR/indox-triage.git
+cd indox-triage
+npm install
+cp .env.example .env.local
+```
+
+On Windows PowerShell, use `Copy-Item .env.example .env.local` instead of `cp`.
+
+Add your OpenRouter key to `.env.local` to enable AI classifications and quick
+replies:
+
+```dotenv
+OPENROUTER_API_KEY=your_key_here
+OPENROUTER_MODEL=google/gemini-3.1-flash-lite
+```
+
+Never commit `.env.local` or paste a real API key into an issue.
+
+Start the local service and leave the terminal running:
+
+```bash
+npm run dev
+```
+
+Confirm that [http://localhost:3000](http://localhost:3000) opens before
+continuing. Without an OpenRouter key, attention classification still uses a
+deterministic local fallback and quick replies use a generic safe draft.
+
+### 2. Load the extension in Chrome
+
+1. Open `chrome://extensions`.
+2. Enable **Developer mode** in the top-right corner.
+3. Select **Load unpacked**.
+4. Choose the repository's `chrome-extension` folder—not the repository root.
+5. Open or refresh [Gmail](https://mail.google.com/).
+
+Chrome does not automatically refresh an unpacked extension after its files
+change. When you pull an update, select **Reload** on the Inbox Triage extension
+card and refresh Gmail.
+
+### 3. Triage an email
+
+1. Move the pointer over a Gmail inbox row and wait about half a second.
+2. Inbox Triage displays one of four attention levels: **Urgent**, **Needs
+   response**, **FYI**, or **Can wait**.
+3. Review the summary, reasoning, recommended action, and detected deadline.
+4. Select **Open email for full context** when you want to inspect the original
+   conversation.
+
+The hover analysis uses only the sender, subject, and snippet already visible in
+the inbox. It does not claim to have read unopened message bodies.
+
+### 4. Prepare a quick reply
+
+1. Select **Quick reply** inside the hover panel.
+2. Review and edit the generated message.
+3. Select **Insert reply in Gmail**.
+4. Inbox Triage opens the conversation and places the draft in Gmail's native
+   reply composer.
+5. Review it once more and press Gmail's **Send** button yourself.
+
+Inbox Triage never presses Send automatically and rejects generated drafts that
+attempt to invent decisions or commitments for the user.
+
+### Troubleshooting
+
+- **No hover panel:** reload the extension at `chrome://extensions`, then refresh
+  Gmail.
+- **Local app unavailable:** run `npm run dev` and confirm localhost port 3000 is
+  reachable.
+- **Only a generic result appears:** add a valid `OPENROUTER_API_KEY` and restart
+  the local service.
+- **Gmail does not receive the reply:** Gmail's interface can change. Open the
+  message manually and use the native Inbox Triage sidebar's **Draft reply**
+  action as a fallback.
+
+For extension-specific implementation notes, see
+[`chrome-extension/README.md`](./chrome-extension/README.md).
+
 ## Working today
 
 - Native Gmail contextual sidebar

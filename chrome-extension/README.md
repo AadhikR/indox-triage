@@ -8,18 +8,23 @@ The user reviews it and presses Gmail's Send button; Inbox Triage never sends it
 automatically. Full-thread analysis and higher-context drafting remain available
 in the native Inbox Triage sidebar.
 
-## Run locally
+## Install and run locally
 
-1. Start the companion app with `npm run dev` and keep it running at
-   `http://localhost:3000`.
-2. In `.env.local`, add `OPENROUTER_API_KEY` and optionally `OPENROUTER_MODEL`.
+1. From the repository root, run `npm install`.
+2. Copy `.env.example` to `.env.local`.
+3. In `.env.local`, add `OPENROUTER_API_KEY` and optionally `OPENROUTER_MODEL`.
    Without a key, the endpoint returns a deterministic local classification.
-3. Open `chrome://extensions` in Chrome.
-4. Enable **Developer mode**.
-5. Select **Load unpacked** and choose this `chrome-extension` directory.
-6. Refresh Gmail, then hover over an inbox row for about half a second.
-7. Select **Quick reply**, edit the draft, and select **Insert reply in Gmail**.
+4. Run `npm run dev` and keep the local service running at
+   `http://localhost:3000`.
+5. Open `chrome://extensions` in Chrome.
+6. Enable **Developer mode**.
+7. Select **Load unpacked** and choose this `chrome-extension` directory.
+8. Refresh Gmail, then hover over an inbox row for about half a second.
+9. Select **Quick reply**, edit the draft, and select **Insert reply in Gmail**.
    Review it in Gmail before pressing **Send**.
+
+After pulling new extension code, select **Reload** on the extension card and
+refresh Gmail so Chrome uses the latest files.
 
 ## Privacy and limitations
 
