@@ -9,6 +9,7 @@
   let hideTimer = null;
   let requestNumber = 0;
   let card = null;
+  let cardPinned = false;
 
   const make = (tag, className, text) => {
     const element = document.createElement(tag);
@@ -83,6 +84,7 @@
   }
 
   function renderResult(row, payload, result, cached) {
+    cardPinned = false;
     const element = ensureCard();
     element.replaceChildren();
     element.style.setProperty("--triage-priority", result.color || "#8e8e93");
@@ -118,6 +120,7 @@
     const openButton = make("button", "inbox-triage-hover-open", "Open email for full context →");
     openButton.type = "button";
     openButton.addEventListener("click", () => {
+      cardPinned = false;
       const target = row.querySelector(".bog") || row;
       if (target instanceof HTMLElement) target.click();
       activeRow = null;
@@ -139,6 +142,7 @@
   }
 
   function renderReplyLoading(row) {
+    cardPinned = true;
     const element = ensureCard();
     element.replaceChildren();
 
@@ -246,6 +250,7 @@
   function scheduleHide() {
     clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
+      if (cardPinned) return;
       if (card?.contains(document.activeElement)) return;
       activeRow = null;
       requestNumber += 1;
@@ -285,6 +290,7 @@
   async function openEmailAndInsertReply(row, body) {
     clearTimeout(hoverTimer);
     clearTimeout(hideTimer);
+    cardPinned = false;
     activeRow = null;
     requestNumber += 1;
     hideCard();
@@ -357,6 +363,7 @@
 
   document.addEventListener("mouseover", (event) => {
     const row = event.target instanceof Element ? event.target.closest(ROW_SELECTOR) : null;
+    if (cardPinned) return;
     if (!row || row === activeRow) return;
 
     clearTimeout(hideTimer);
@@ -382,6 +389,7 @@
   window.addEventListener("scroll", () => {
     clearTimeout(hoverTimer);
     clearTimeout(hideTimer);
+    cardPinned = false;
     activeRow = null;
     requestNumber += 1;
     hideCard();

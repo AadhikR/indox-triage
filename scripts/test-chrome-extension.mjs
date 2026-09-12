@@ -39,6 +39,8 @@ assert.match(content, /Quick reply/);
 assert.match(content, /Insert reply in Gmail/);
 assert.match(content, /document\.execCommand\("insertText"/);
 assert.match(content, /press Gmail’s Send button/);
+assert.match(content, /cardPinned = true/);
+assert.match(content, /if \(cardPinned\) return/);
 assert.doesNotMatch(content, /innerHTML/);
 assert.match(styles, /inbox-triage-hover-visible/);
 assert.match(styles, /pointer-events: auto/);
