@@ -7,7 +7,7 @@ export default async function DashboardLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   let user: AppUser = {
     name: "Demo User",
-    email: "demo@indox.local",
+    email: "demo@inboxtriage.local",
     isDemo: true,
   };
 
@@ -19,7 +19,7 @@ export default async function DashboardLayout({
     }
 
     user = {
-      name: session.user.name ?? session.user.nickname ?? "Indox user",
+      name: session.user.name ?? session.user.nickname ?? "Inbox Triage user",
       email: session.user.email ?? "Authenticated with Auth0",
       picture: session.user.picture,
       isDemo: false,

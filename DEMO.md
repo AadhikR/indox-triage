@@ -1,18 +1,19 @@
-# Indox Triage demo guide
+# Inbox Triage demo guide
 
 ## The 45-second judge demo
 
-1. Open Gmail with the Indox sidebar already visible.
+1. Open Gmail with the Inbox Triage sidebar already visible.
 2. Open the urgent sample email below.
-3. Point out that Indox appears where the email decision is already happening.
+3. Point out that Inbox Triage appears where the email decision is already happening.
 4. Show the attention level, full-thread summary, deadline, commitments, and next action.
 5. Point to **AI analysis active** and **Analysis only — no messages were sent or changed**.
-6. Select **Re-analyze** to demonstrate a user-controlled agent action inside Gmail.
-7. Switch to the informational sample to show that Indox changes with Gmail context.
+6. Select **Draft reply** to open a context-aware, editable response in Gmail.
+7. Close the draft without sending, then select **Re-analyze** to demonstrate another user-controlled agent action.
+8. Switch to the informational sample to show that Inbox Triage changes with Gmail context.
 
 ## One-line pitch
 
-Indox turns every open Gmail thread into a clear decision: how urgently it needs you, why, and what to do next.
+Inbox Triage turns every open Gmail thread into a clear decision: how urgently it needs you, why, what to do next, and—when asked—a ready-to-edit reply.
 
 ## Demo emails
 
@@ -53,10 +54,10 @@ Expected result: **FYI**.
 ## Recovery plan
 
 - If OpenRouter succeeds, the card says **AI analysis active**.
-- If OpenRouter is unavailable, Indox labels the fallback clearly and still produces a deterministic result.
+- If OpenRouter is unavailable, Inbox Triage labels the fallback clearly and still produces a deterministic result.
 - If Gmail context cannot be read, the card explains the failure and offers **Try again**.
 - Keep one already-analyzed sample thread open as a backup for the live presentation.
 
 ## Privacy statement
 
-Indox reads only the open Gmail thread. It bounds analysis to the eight most recent messages and 3,500 cleaned characters per message. With AI enabled, that bounded context is sent to OpenRouter. The sidebar does not send, modify, archive, or delete email. Its private digest stores only bounded metadata and summaries for the six most recently analyzed threads; full email bodies are not retained, and the user can clear all saved digest and correction data.
+Inbox Triage reads only the open Gmail thread. It bounds analysis to the eight most recent messages and 3,500 cleaned characters per message. With AI enabled, that bounded context is sent to OpenRouter. Reply drafting happens only after the user selects **Draft reply**, opens an editable Gmail draft, and never sends automatically. Its private digest stores only bounded metadata and summaries for the six most recently analyzed threads; full email bodies are not retained, and the user can clear all saved digest and correction data.

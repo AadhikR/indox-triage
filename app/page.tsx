@@ -12,8 +12,8 @@ export default function Home() {
     <main className="landing-shell">
       <nav className="landing-nav" aria-label="Primary navigation">
         <Link className="brand" href="/">
-          <span className="brand-mark">I</span>
-          <span>Indox</span>
+          <span className="brand-mark">IT</span>
+          <span>Inbox Triage</span>
         </Link>
         <div className="landing-nav-actions">
           <Link className="button button-secondary" href="/dashboard">View demo</Link>
@@ -26,7 +26,7 @@ export default function Home() {
           <p className="eyebrow">Your inbox, ranked by consequence</p>
           <h1>Know what needs you before it becomes urgent.</h1>
           <p className="hero-description">
-            Indox reads the conversation behind each email, finds commitments and deadlines,
+            Inbox Triage reads the conversation behind each email, finds commitments and deadlines,
             and gives you the next action—not another pile of summaries.
           </p>
           <div className="hero-actions">

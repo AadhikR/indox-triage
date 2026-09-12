@@ -3,6 +3,7 @@ import fs from "node:fs";
 import vm from "node:vm";
 
 const source = fs.readFileSync(new URL("../gmail-addon/Code.gs", import.meta.url), "utf8");
+const manifest = JSON.parse(fs.readFileSync(new URL("../gmail-addon/appsscript.json", import.meta.url), "utf8"));
 const userStore = new Map();
 const userProperties = {
   getProperty: (key) => userStore.get(key) ?? null,
@@ -82,6 +83,19 @@ assert.deepEqual(
   ["URGENT", "NEEDS_RESPONSE", "FYI", "CAN_WAIT"],
 );
 assert.match(request.messages[1].content, /example\.com/);
+
+const replyRequest = sandbox.buildReplyRequest(context("Could you confirm the launch date?"), "test/model");
+assert.equal(replyRequest.model, "test/model");
+assert.equal(replyRequest.response_format.json_schema.name, "email_reply_draft");
+assert.match(replyRequest.messages[0].content, /never invent facts/);
+assert.equal(sandbox.normalizeReplyDraft({ body: "  Thanks for the update.  " }), "Thanks for the update.");
+assert.ok(sandbox.normalizeReplyDraft({ body: "x".repeat(4000) }).length <= 3000);
+assert.match(sandbox.generateReplyDraft(context("Example")), /Thanks for your email/);
+assert.equal(typeof sandbox.createAiReplyDraft, "function");
+assert.match(source, /setComposeAction\(/);
+assert.match(source, /ComposedEmailType\.REPLY_AS_DRAFT/);
+assert.ok(manifest.oauthScopes.includes("https://www.googleapis.com/auth/gmail.addons.current.action.compose"));
+assert.equal(manifest.addOns.common.name, "Inbox Triage");
 assert.equal(typeof sandbox.resetIndoxAuthorization, "function");
 assert.equal(typeof sandbox.authorizeIndoxExternalRequests, "function");
 assert.equal(typeof sandbox.reanalyzeCurrentThread, "function");

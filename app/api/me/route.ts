@@ -6,7 +6,7 @@ export async function GET() {
     return NextResponse.json({
       authenticated: false,
       mode: "demo",
-      user: { name: "Demo User", email: "demo@indox.local" },
+      user: { name: "Demo User", email: "demo@inboxtriage.local" },
     });
   }
 

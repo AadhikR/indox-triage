@@ -1,6 +1,6 @@
 # Gmail Workspace Add-on
 
-This folder contains the Gmail-native Indox sidebar. It uses Gmail contextual
+This folder contains the Gmail-native Inbox Triage sidebar. It uses Gmail contextual
 triggers and `CardService`, so the agent appears in Gmail's existing right-hand
 panel instead of a separate chat interface.
 
@@ -14,6 +14,7 @@ panel instead of a separate chat interface.
 - Assigns one of four attention levels
 - Shows a short summary, reason, and next action in a native Gmail card
 - Supports user-controlled re-analysis without leaving Gmail
+- Creates an AI-assisted reply as an editable Gmail draft; it never auto-sends
 - Makes AI, fallback, and error states explicit
 - Shows a private digest of the six most recently analyzed threads
 - Learns from explicit priority corrections using per-user storage
@@ -37,8 +38,8 @@ The add-on homepage includes a control that clears both stores.
 4. Replace the generated script with `Code.gs`.
 5. Select **Deploy → Test deployments**.
 6. Choose **Google Workspace Add-on**, then install the test deployment.
-7. Open Gmail, open an email, and click the Indox icon in the right-hand panel.
-8. Approve the requested current-message permission when Google asks.
+7. Open Gmail, open an email, and click the Inbox Triage icon in the right-hand panel.
+8. Approve the requested current-message and draft-compose permissions when Google asks.
 
 Publishing to the Workspace Marketplace is not required for the hackathon demo.
 
@@ -52,3 +53,10 @@ Publishing to the Workspace Marketplace is not required for the hackathon demo.
 
 Do not paste the key into `Code.gs`, the manifest, or GitHub. Script Properties
 are only available to the server-side Apps Script project.
+
+## Reply drafting
+
+Select **Draft reply** in an analyzed thread. Inbox Triage sends the same bounded
+thread context to OpenRouter, validates the generated body, and opens Gmail's
+native reply composer with an editable draft. The user must review and send it.
+If OpenRouter is unavailable, a clearly generic acknowledgement draft is used.

@@ -6,15 +6,16 @@
   "oauthScopes": [
     "https://www.googleapis.com/auth/gmail.addons.execute",
     "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
+    "https://www.googleapis.com/auth/gmail.addons.current.action.compose",
     "https://www.googleapis.com/auth/script.external_request"
   ],
   "addOns": {
     "common": {
-      "name": "Indox Triage",
+      "name": "Inbox Triage",
       "logoUrl": "https://raw.githubusercontent.com/AadhikR/indox-triage/main/public/favicon.svg",
       "layoutProperties": {
-        "primaryColor": "#17233a",
-        "secondaryColor": "#f0a34a"
+        "primaryColor": "#111111",
+        "secondaryColor": "#0071e3"
       },
       "homepageTrigger": {
         "runFunction": "onHomepage"

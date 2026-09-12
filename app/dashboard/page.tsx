@@ -46,7 +46,7 @@ export default function Dashboard() {
   return (
     <main className="app-shell">
       <aside className="sidebar">
-        <Link className="brand brand-light" href="/"><span className="brand-mark">I</span><span>Indox</span></Link>
+        <Link className="brand brand-light" href="/"><span className="brand-mark">IT</span><span>Inbox Triage</span></Link>
         <nav className="sidebar-nav" aria-label="Workspace navigation">
           <button className="nav-item nav-item-active" type="button"><span className="nav-glyph">▣</span> Triage</button>
           <button className="nav-item" type="button"><span className="nav-glyph">✓</span> Handled</button>

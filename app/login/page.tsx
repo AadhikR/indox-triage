@@ -15,8 +15,8 @@ export default async function LoginPage() {
     <main className="login-shell">
       <section className="login-card">
         <Link className="brand" href="/">
-          <span className="brand-mark">I</span>
-          <span>Indox</span>
+          <span className="brand-mark">IT</span>
+          <span>Inbox Triage</span>
         </Link>
 
         <div className="login-copy">
@@ -64,12 +64,12 @@ export default async function LoginPage() {
         <h2>Your login is separate from your mailbox.</h2>
         <p>
           Auth0 establishes who you are. Gmail authorization later controls exactly
-          which email data Indox can access.
+          which email data Inbox Triage can access.
         </p>
         <div className="context-divider" />
         <span className="context-number">02</span>
         <h2>You approve every outward action.</h2>
-        <p>Indox can prepare a reply, but it cannot send one without your confirmation.</p>
+        <p>Inbox Triage can prepare a reply, but it cannot send one without your confirmation.</p>
       </aside>
     </main>
   );

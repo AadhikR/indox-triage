@@ -1,8 +1,8 @@
-# Indox Triage
+# Inbox Triage
 
-Indox Triage is a Gmail-native attention agent that helps people understand which messages need action, why they matter, and what to do next.
+Inbox Triage is a Gmail-native attention agent that helps people understand which messages need action, why they matter, and what to do next.
 
-> **One-line pitch:** Indox turns every open Gmail thread into a clear decision: how urgently it needs you, why, and what to do next.
+> **One-line pitch:** Inbox Triage turns every open Gmail thread into a clear decision: how urgently it needs you, why, and what to do next.
 
 ## Working today
 
@@ -12,6 +12,7 @@ Indox Triage is a Gmail-native attention agent that helps people understand whic
 - Urgent, Needs response, FYI, and Can wait classification
 - Summary, deadline, commitment, and recommended-action extraction
 - User-controlled re-analysis without sending or changing email
+- AI-assisted reply drafts that open in Gmail for review and never auto-send
 - Private recently analyzed digest with one-click links back to Gmail
 - User priority corrections that personalize future analysis
 - Auth0-protected companion dashboard
@@ -25,7 +26,7 @@ The agent classifies email threads into four attention levels:
 - FYI
 - Can wait
 
-It uses full-thread context to produce a short summary, identify deadlines and commitments, and recommend an action. Reply drafting is an optional future extension.
+It uses full-thread context to produce a short summary, identify deadlines and commitments, recommend an action, and prepare an editable reply draft when requested.
 
 ## Local development
 
@@ -43,7 +44,7 @@ Copy `.env.example` to `.env.local` before adding integrations. Never commit rea
 - Auth0 for secure sign-in (implemented; requires local credentials)
 - Gmail Workspace Add-on for native current-thread access (implemented)
 - OpenRouter for structured inbox analysis (implemented in the Gmail add-on)
-- Gmail draft creation after user approval (optional future extension)
+- Gmail-native editable reply draft creation (implemented)
 
 ## Auth0 setup
 
@@ -63,7 +64,7 @@ stays available in clearly labelled demo mode for development.
 The user-facing agent lives in Gmail's contextual side panel. The Apps Script
 add-on reads bounded context from the currently open thread, requests structured
 analysis from OpenRouter, validates the result, and renders the priority, summary,
-deadline, commitments, and next action with Gmail's native CardService. The
+deadline, commitments, next action, and a user-triggered reply-drafting action with Gmail's native CardService. The
 Next.js companion app provides Auth0-protected onboarding and dashboard surfaces.
 
 The installable Apps Script source is in [`gmail-addon`](./gmail-addon). Follow
