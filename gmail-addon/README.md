@@ -10,12 +10,15 @@ panel instead of a separate chat interface.
 - Uses Gmail's temporary message access token
 - Reads every message in the open thread
 - Removes common quoted reply text
-- Assigns one of four preliminary attention levels
+- Uses OpenRouter structured output when an API key is configured
+- Assigns one of four attention levels
 - Shows a short summary, reason, and next action in a native Gmail card
 - Escapes email content before rendering it
+- Falls back to deterministic local triage if OpenRouter is unavailable
 
-The deterministic classification is intentionally temporary. Part 4 will send
-the bounded thread context to the Indox backend for agent analysis.
+For privacy, only the eight most recent messages are considered and each clean
+message body is capped at 3,500 characters. When AI analysis is enabled, this
+bounded thread content is sent to OpenRouter.
 
 ## Install as a test deployment
 
@@ -29,3 +32,14 @@ the bounded thread context to the Indox backend for agent analysis.
 8. Approve the requested current-message permission when Google asks.
 
 Publishing to the Workspace Marketplace is not required for the hackathon demo.
+
+## Enable AI analysis
+
+1. In Apps Script, open **Project Settings**.
+2. Under **Script Properties**, select **Add script property**.
+3. Use `OPENROUTER_API_KEY` as the property name and paste your key as the value.
+4. Optionally add `OPENROUTER_MODEL`. The default is `google/gemini-3.1-flash-lite`.
+5. Save the properties, save `Code.gs`, and refresh Gmail.
+
+Do not paste the key into `Code.gs`, the manifest, or GitHub. Script Properties
+are only available to the server-side Apps Script project.

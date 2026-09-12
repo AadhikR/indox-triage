@@ -3,7 +3,12 @@ import fs from "node:fs";
 import vm from "node:vm";
 
 const source = fs.readFileSync(new URL("../gmail-addon/Code.gs", import.meta.url), "utf8");
-const sandbox = { console };
+const sandbox = {
+  console,
+  PropertiesService: {
+    getScriptProperties: () => ({ getProperty: () => null }),
+  },
+};
 vm.createContext(sandbox);
 vm.runInContext(source, sandbox);
 
@@ -18,5 +23,22 @@ assert.equal(sandbox.classifyThreadHeuristically(context("Weekly newsletter. Uns
 assert.equal(sandbox.cleanMessageBody("New reply\n\nOn Friday, Person wrote:\n> Old reply"), "New reply");
 assert.ok(sandbox.summarizeMessage("x".repeat(300)).length <= 221);
 assert.equal(sandbox.escapeCardText("<script>&\"'"), "&lt;script&gt;&amp;&quot;&#39;");
+
+const normalized = sandbox.normalizeAiAnalysis({
+  priority: "ATTENTION_REQUIRED",
+  summary: "A reply is needed.",
+  reason: "The sender is waiting.",
+  action: "Review and respond.",
+  deadline: "Friday",
+  commitments: ["Send the revised proposal"],
+});
+assert.equal(normalized.label, "Attention required");
+assert.equal(normalized.source, "AI analysis");
+assert.equal(normalized.commitments.length, 1);
+
+const request = sandbox.buildOpenRouterRequest(context("Please review this by Friday."), "test/model");
+assert.equal(request.model, "test/model");
+assert.equal(request.response_format.type, "json_schema");
+assert.equal(request.response_format.json_schema.strict, true);
 
 console.log("Gmail add-on checks passed.");

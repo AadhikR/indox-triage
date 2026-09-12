@@ -28,7 +28,7 @@ Copy `.env.example` to `.env.local` before adding integrations. Never commit rea
 
 - Auth0 for secure sign-in (implemented; requires local credentials)
 - Gmail Workspace Add-on for native current-thread access (implemented)
-- OpenRouter for inbox analysis
+- OpenRouter for structured inbox analysis (implemented in the Gmail add-on)
 - Gmail draft creation after user approval
 
 ## Auth0 setup
