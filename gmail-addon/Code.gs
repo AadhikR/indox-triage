@@ -461,3 +461,14 @@ function escapeCardText(value) {
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
+
+/**
+ * Invalidates this test user's existing Apps Script authorization so newly
+ * added OAuth scopes can be granted on the next Gmail add-on run.
+ *
+ * Run this function once from the Apps Script editor after changing scopes,
+ * then refresh Gmail and approve every permission requested by Google.
+ */
+function resetIndoxAuthorization() {
+  ScriptApp.invalidateAuth();
+}
