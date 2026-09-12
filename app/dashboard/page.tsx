@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useAppUser } from "@/components/auth-state";
 
-type Priority = "Urgent" | "Attention required" | "Moderate" | "Take your time";
+type Priority = "Urgent" | "Needs response" | "FYI" | "Can wait";
 
 type EmailItem = {
   id: number;
@@ -21,12 +21,12 @@ type EmailItem = {
 
 const emails: EmailItem[] = [
   { id: 1, sender: "Maya Chen", initials: "MC", subject: "Re: Revised launch proposal", summary: "Maya is waiting for approval on the revised proposal before the Friday launch window closes.", reason: "You committed to replying by tomorrow, and the launch depends on your approval.", action: "Review the final pricing section and approve or request changes.", deadline: "Tomorrow, 10:00 AM", time: "9:42 AM", priority: "Urgent" },
-  { id: 2, sender: "Omar Rahman", initials: "OR", subject: "Security review questions", summary: "Three security questions remain unanswered before the vendor review can proceed.", reason: "Omar has followed up twice and is blocked on your response.", action: "Answer the three highlighted questions or delegate them to engineering.", deadline: "Thursday", time: "8:17 AM", priority: "Attention required" },
-  { id: 3, sender: "Leila Haddad", initials: "LH", subject: "Ideas for next week’s workshop", summary: "Leila shared a draft agenda and asked for optional feedback before next week.", reason: "Useful to review, but no work is blocked and there is no immediate deadline.", action: "Review when planning next week’s calendar.", deadline: "Next Monday", time: "Yesterday", priority: "Moderate" },
-  { id: 4, sender: "Product Weekly", initials: "PW", subject: "Five product launches worth watching", summary: "A weekly newsletter covering product launches and industry news.", reason: "No response or decision is required.", action: "Read whenever you have spare time.", deadline: "None", time: "Yesterday", priority: "Take your time" },
+  { id: 2, sender: "Omar Rahman", initials: "OR", subject: "Security review questions", summary: "Three security questions remain unanswered before the vendor review can proceed.", reason: "Omar has followed up twice and is blocked on your response.", action: "Answer the three highlighted questions or delegate them to engineering.", deadline: "Thursday", time: "8:17 AM", priority: "Needs response" },
+  { id: 3, sender: "Leila Haddad", initials: "LH", subject: "Ideas for next week’s workshop", summary: "Leila shared a draft agenda and asked for optional feedback before next week.", reason: "Useful to review, but no work is blocked and there is no immediate deadline.", action: "Review when planning next week’s calendar.", deadline: "Next Monday", time: "Yesterday", priority: "Can wait" },
+  { id: 4, sender: "Product Weekly", initials: "PW", subject: "Five product launches worth watching", summary: "A weekly newsletter covering product launches and industry news.", reason: "No response or decision is required.", action: "Read whenever you have spare time.", deadline: "None", time: "Yesterday", priority: "FYI" },
 ];
 
-const filters: Array<"All" | Priority> = ["All", "Urgent", "Attention required", "Moderate", "Take your time"];
+const filters: Array<"All" | Priority> = ["All", "Urgent", "Needs response", "FYI", "Can wait"];
 
 const priorityClass = (priority: Priority) => `priority-${priority.toLowerCase().replaceAll(" ", "-")}`;
 

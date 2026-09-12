@@ -15,12 +15,19 @@ panel instead of a separate chat interface.
 - Shows a short summary, reason, and next action in a native Gmail card
 - Supports user-controlled re-analysis without leaving Gmail
 - Makes AI, fallback, and error states explicit
+- Shows a private digest of the six most recently analyzed threads
+- Learns from explicit priority corrections using per-user storage
 - Escapes email content before rendering it
 - Falls back to deterministic local triage if OpenRouter is unavailable
 
 For privacy, only the eight most recent messages are considered and each clean
 message body is capped at 3,500 characters. When AI analysis is enabled, this
 bounded thread content is sent to OpenRouter.
+
+The digest retains only bounded subject, sender, summary, priority, permalink,
+and timestamp metadata for six threads in Apps Script User Properties. Correction
+examples retain sender domain, bounded subject, selected priority, and timestamp.
+The add-on homepage includes a control that clears both stores.
 
 ## Install as a test deployment
 

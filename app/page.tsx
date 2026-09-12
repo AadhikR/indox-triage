@@ -2,9 +2,9 @@ import Link from "next/link";
 
 const priorities = [
   { label: "Urgent", color: "#dc4b3e", count: 2 },
-  { label: "Attention required", color: "#e79a2f", count: 4 },
-  { label: "Moderate", color: "#4876c7", count: 7 },
-  { label: "Take your time", color: "#7e8a96", count: 18 },
+  { label: "Needs response", color: "#e79a2f", count: 4 },
+  { label: "FYI", color: "#4876c7", count: 18 },
+  { label: "Can wait", color: "#7e8a96", count: 7 },
 ];
 
 export default function Home() {

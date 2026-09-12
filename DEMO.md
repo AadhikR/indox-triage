@@ -26,29 +26,29 @@ Send these messages to the Gmail account used for the demo. Use obviously fake n
 
 Expected result: **Urgent**, with today's deadline and an approval action.
 
-### Attention required
+### Needs response
 
 **Subject:** Waiting on your decision for the venue
 
 > Could you choose between the Marina and Downtown venues? The team cannot finalize invitations until we have your decision. Please let us know which option you prefer.
 
-Expected result: **Attention required**, because another person is blocked.
+Expected result: **Needs response**, because another person is blocked.
 
-### Moderate
+### Can wait
 
 **Subject:** Review notes for next month's workshop
 
 > I attached the first outline for next month's workshop. When you have time this week, please review the session order and send any suggestions. Nothing is blocked yet.
 
-Expected result: **Moderate**.
+Expected result: **Can wait**.
 
-### Take your time
+### FYI
 
 **Subject:** Weekly product newsletter
 
 > Here is this week's product roundup and community news. No response is needed. You can unsubscribe at any time.
 
-Expected result: **Take your time**.
+Expected result: **FYI**.
 
 ## Recovery plan
 
@@ -59,4 +59,4 @@ Expected result: **Take your time**.
 
 ## Privacy statement
 
-Indox reads only the open Gmail thread. It bounds analysis to the eight most recent messages and 3,500 cleaned characters per message. With AI enabled, that bounded context is sent to OpenRouter. The sidebar does not send, modify, archive, or delete email.
+Indox reads only the open Gmail thread. It bounds analysis to the eight most recent messages and 3,500 cleaned characters per message. With AI enabled, that bounded context is sent to OpenRouter. The sidebar does not send, modify, archive, or delete email. Its private digest stores only bounded metadata and summaries for the six most recently analyzed threads; full email bodies are not retained, and the user can clear all saved digest and correction data.

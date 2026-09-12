@@ -9,9 +9,11 @@ Indox Triage is a Gmail-native attention agent that helps people understand whic
 - Native Gmail contextual sidebar
 - Full open-thread context with bounded data handling
 - OpenRouter structured analysis with deterministic fallback
-- Urgent, Attention required, Moderate, and Take your time classification
+- Urgent, Needs response, FYI, and Can wait classification
 - Summary, deadline, commitment, and recommended-action extraction
 - User-controlled re-analysis without sending or changing email
+- Private recently analyzed digest with one-click links back to Gmail
+- User priority corrections that personalize future analysis
 - Auth0-protected companion dashboard
 
 ## Product direction
@@ -19,9 +21,9 @@ Indox Triage is a Gmail-native attention agent that helps people understand whic
 The agent classifies email threads into four attention levels:
 
 - Urgent
-- Attention required
-- Moderate
-- Take your time
+- Needs response
+- FYI
+- Can wait
 
 It uses full-thread context to produce a short summary, identify deadlines and commitments, and recommend an action. Reply drafting is an optional future extension.
 
@@ -72,3 +74,7 @@ Marketplace publication is not required for local hackathon testing.
 
 See [`DEMO.md`](./DEMO.md) for a 45-second demo script, four safe sample emails,
 expected results, privacy language, and the presentation recovery plan.
+
+The digest and priority-learning features store a bounded amount of per-user
+metadata in Apps Script User Properties. Full email bodies are never retained,
+and the user can clear the saved digest and learning data from the add-on homepage.
