@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:3000/api/hover-triage";
-const CACHE_KEY = "inboxTriageHoverCacheV1";
+const CACHE_KEY = "inboxTriageHoverCacheV2";
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const CACHE_LIMIT = 80;
 
@@ -39,8 +39,10 @@ async function analyzeHover(payload) {
 
   if (!response.ok) throw new Error(`Inbox Triage returned ${response.status}.`);
   const data = await response.json();
-  cache[key] = { data, savedAt: Date.now() };
-  await saveCache(cache);
+  if (data.source === "ai") {
+    cache[key] = { data, savedAt: Date.now() };
+    await saveCache(cache);
+  }
   return { ok: true, data, cached: false };
 }
 
