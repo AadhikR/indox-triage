@@ -13,6 +13,7 @@ Inbox Triage is a Gmail-native attention agent that helps people understand whic
 - Summary, deadline, commitment, and recommended-action extraction
 - User-controlled re-analysis without sending or changing email
 - AI-assisted reply drafts that open in Gmail for review and never auto-send
+- Optional Chrome hover previews for visible Gmail inbox rows
 - Private recently analyzed digest with one-click links back to Gmail
 - User priority corrections that personalize future analysis
 - Auth0-protected companion dashboard
@@ -45,6 +46,7 @@ Copy `.env.example` to `.env.local` before adding integrations. Never commit rea
 - Gmail Workspace Add-on for native current-thread access (implemented)
 - OpenRouter for structured inbox analysis (implemented in the Gmail add-on)
 - Gmail-native editable reply draft creation (implemented)
+- Chrome hover extension with a local, server-side OpenRouter endpoint (implemented)
 
 ## Auth0 setup
 
@@ -70,6 +72,10 @@ Next.js companion app provides Auth0-protected onboarding and dashboard surfaces
 The installable Apps Script source is in [`gmail-addon`](./gmail-addon). Follow
 that folder's README to create a test deployment in your Gmail account. Google
 Marketplace publication is not required for local hackathon testing.
+
+The optional hover interaction is in [`chrome-extension`](./chrome-extension).
+It uses only the sender, subject, and snippet visible in an inbox row, while the
+native add-on remains responsible for full-thread analysis and reply drafting.
 
 ## Demo and judging
 

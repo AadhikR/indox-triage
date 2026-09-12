@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Inbox Triage Hover",
+  "description": "Shows a fast attention preview when you hover over a Gmail inbox row.",
+  "version": "0.1.0",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "http://localhost:3000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Inbox Triage Hover"
+  }
+}

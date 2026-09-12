@@ -1,0 +1,155 @@
+.inbox-triage-hover-card {
+  --triage-priority: #8e8e93;
+  position: fixed;
+  z-index: 2147483647;
+  box-sizing: border-box;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border: 1px solid rgba(60, 64, 67, .12);
+  border-radius: 18px;
+  padding: 16px;
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 24px 70px rgba(32, 33, 36, .22), 0 2px 8px rgba(32, 33, 36, .08);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(7px) scale(.985);
+  transition: opacity 150ms ease, transform 180ms cubic-bezier(.2, .8, .2, 1);
+  backdrop-filter: blur(22px) saturate(180%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.inbox-triage-hover-card,
+.inbox-triage-hover-card * {
+  box-sizing: border-box;
+}
+
+.inbox-triage-hover-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.inbox-triage-hover-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 30px;
+}
+
+.inbox-triage-hover-mark {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #111;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: -.04em;
+}
+
+.inbox-triage-hover-title {
+  display: grid;
+  gap: 1px;
+}
+
+.inbox-triage-hover-title strong,
+.inbox-triage-hover-header > strong {
+  color: #1d1d1f;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.inbox-triage-hover-title small {
+  color: #8e8e93;
+  font-size: 10px;
+}
+
+.inbox-triage-hover-spinner {
+  width: 15px;
+  height: 15px;
+  margin-left: auto;
+  border: 2px solid #e5e5ea;
+  border-top-color: #0071e3;
+  border-radius: 50%;
+  animation: inbox-triage-spin .7s linear infinite;
+}
+
+.inbox-triage-hover-subject {
+  overflow: hidden;
+  margin: 13px 0 0;
+  color: #6e6e73;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inbox-triage-hover-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 999px;
+  margin-top: 15px;
+  padding: 5px 9px;
+  color: var(--triage-priority);
+  background: color-mix(in srgb, var(--triage-priority) 9%, white);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.inbox-triage-hover-priority > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--triage-priority);
+}
+
+.inbox-triage-hover-summary {
+  margin: 11px 0 0;
+  color: #1d1d1f;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -.015em;
+  line-height: 1.35;
+}
+
+.inbox-triage-hover-reason {
+  margin: 7px 0 0;
+  color: #6e6e73;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.inbox-triage-hover-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid #ececf0;
+  margin-top: 14px;
+  padding-top: 11px;
+  color: #8e8e93;
+  font-size: 10px;
+}
+
+.inbox-triage-hover-footer span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inbox-triage-hover-footer span:last-child {
+  flex: 0 0 auto;
+  color: #0066cc;
+}
+
+@keyframes inbox-triage-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inbox-triage-hover-card { transition: none; }
+  .inbox-triage-hover-spinner { animation: none; }
+}

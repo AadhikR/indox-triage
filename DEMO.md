@@ -3,10 +3,10 @@
 ## The 45-second judge demo
 
 1. Open Gmail with the Inbox Triage sidebar already visible.
-2. Open the urgent sample email below.
-3. Point out that Inbox Triage appears where the email decision is already happening.
+2. Hover over the urgent sample to show its instant visible-row preview.
+3. Open the urgent sample and point out that Inbox Triage now switches to bounded full-thread context.
 4. Show the attention level, full-thread summary, deadline, commitments, and next action.
-5. Point to **AI analysis active** and **Analysis only — no messages were sent or changed**.
+5. Point to the compact **AI analysis active** status and the explicit draft review note.
 6. Select **Draft reply** to open a context-aware, editable response in Gmail.
 7. Close the draft without sending, then select **Re-analyze** to demonstrate another user-controlled agent action.
 8. Switch to the informational sample to show that Inbox Triage changes with Gmail context.

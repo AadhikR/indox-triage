@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:addon": "node scripts/test-gmail-addon.mjs"
+    "test:addon": "node scripts/test-gmail-addon.mjs",
+    "test:extension": "node scripts/test-chrome-extension.mjs"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.29.0",
