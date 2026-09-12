@@ -24,6 +24,10 @@
     card.setAttribute("aria-label", "Inbox Triage preview");
     card.addEventListener("mouseenter", () => clearTimeout(hideTimer));
     card.addEventListener("mouseleave", scheduleHide);
+    card.addEventListener("focusin", () => clearTimeout(hideTimer));
+    card.addEventListener("focusout", (event) => {
+      if (!(event.relatedTarget instanceof Node) || !card.contains(event.relatedTarget)) scheduleHide();
+    });
     document.body.appendChild(card);
     return card;
   }
@@ -107,6 +111,10 @@
     }
 
     const footer = make("div", "inbox-triage-hover-footer");
+    const footerActions = make("div", "inbox-triage-hover-actions");
+    const quickReplyButton = make("button", "inbox-triage-hover-quick", "Quick reply");
+    quickReplyButton.type = "button";
+    quickReplyButton.addEventListener("click", () => requestQuickReply(row, payload, result));
     const openButton = make("button", "inbox-triage-hover-open", "Open email for full context →");
     openButton.type = "button";
     openButton.addEventListener("click", () => {
@@ -116,7 +124,8 @@
       requestNumber += 1;
       hideCard();
     });
-    footer.append(make("span", "", payload.sender || "Unknown sender"), openButton);
+    footerActions.append(quickReplyButton, openButton);
+    footer.append(make("span", "", payload.sender || "Unknown sender"), footerActions);
 
     element.append(
       header,
@@ -126,6 +135,98 @@
       details,
       footer,
     );
+    placeCard(row);
+  }
+
+  function renderReplyLoading(row) {
+    const element = ensureCard();
+    element.replaceChildren();
+
+    const header = make("div", "inbox-triage-hover-header");
+    header.append(make("span", "inbox-triage-hover-mark", "IT"));
+    const title = make("div", "inbox-triage-hover-title");
+    title.append(make("strong", "", "Quick reply"), make("small", "", "Writing from the visible preview…"));
+    header.append(title, make("span", "inbox-triage-hover-spinner"));
+
+    element.append(header, make("p", "inbox-triage-hover-summary", "Preparing a short reply for you to review."));
+    placeCard(row);
+  }
+
+  function renderReplyDraft(row, payload, triageResult, replyResult) {
+    const element = ensureCard();
+    element.replaceChildren();
+
+    const header = make("div", "inbox-triage-hover-header");
+    header.append(make("span", "inbox-triage-hover-mark", "IT"));
+    const title = make("div", "inbox-triage-hover-title");
+    title.append(
+      make("strong", "", "Quick reply"),
+      make("small", "", replyResult.source === "ai" ? "AI draft · editable" : "Safe fallback · editable"),
+    );
+    header.append(title);
+
+    const editor = make("textarea", "inbox-triage-hover-editor");
+    editor.value = replyResult.body;
+    editor.rows = 5;
+    editor.setAttribute("aria-label", "Editable quick reply");
+
+    const note = make(
+      "p",
+      "inbox-triage-hover-note",
+      "Based on the visible preview. Review the draft, then Gmail lets you make the final send.",
+    );
+    const status = make("p", "inbox-triage-hover-reply-status", "");
+    status.setAttribute("aria-live", "polite");
+
+    const controls = make("div", "inbox-triage-hover-reply-controls");
+    const backButton = make("button", "inbox-triage-hover-secondary", "Back");
+    backButton.type = "button";
+    backButton.addEventListener("click", () => renderResult(row, payload, triageResult, true));
+
+    const insertButton = make("button", "inbox-triage-hover-primary", "Insert reply in Gmail →");
+    insertButton.type = "button";
+    insertButton.addEventListener("click", async () => {
+      const body = editor.value.trim();
+      if (!body) {
+        status.textContent = "Write a reply before continuing.";
+        editor.focus();
+        return;
+      }
+
+      insertButton.disabled = true;
+      insertButton.textContent = "Opening Gmail…";
+      status.textContent = "";
+      await openEmailAndInsertReply(row, body);
+    });
+
+    controls.append(backButton, insertButton);
+    element.append(header, editor, note, status, controls);
+    placeCard(row);
+    editor.focus();
+    editor.setSelectionRange(editor.value.length, editor.value.length);
+  }
+
+  function renderReplyError(row, payload, triageResult) {
+    const element = ensureCard();
+    element.replaceChildren();
+
+    const header = make("div", "inbox-triage-hover-header");
+    header.append(make("span", "inbox-triage-hover-mark", "IT"), make("strong", "", "Quick reply unavailable"));
+    const message = make(
+      "p",
+      "inbox-triage-hover-reason",
+      "Make sure the local Inbox Triage app is running, then try again.",
+    );
+    const controls = make("div", "inbox-triage-hover-reply-controls");
+    const backButton = make("button", "inbox-triage-hover-secondary", "Back");
+    backButton.type = "button";
+    backButton.addEventListener("click", () => renderResult(row, payload, triageResult, true));
+    const retryButton = make("button", "inbox-triage-hover-primary", "Try again");
+    retryButton.type = "button";
+    retryButton.addEventListener("click", () => requestQuickReply(row, payload, triageResult));
+    controls.append(backButton, retryButton);
+
+    element.append(header, message, controls);
     placeCard(row);
   }
 
@@ -145,10 +246,99 @@
   function scheduleHide() {
     clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
+      if (card?.contains(document.activeElement)) return;
       activeRow = null;
       requestNumber += 1;
       hideCard();
     }, 180);
+  }
+
+  function isVisible(element) {
+    if (!(element instanceof HTMLElement)) return false;
+    const rect = element.getBoundingClientRect();
+    const style = window.getComputedStyle(element);
+    return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
+  }
+
+  async function waitForElement(find, timeoutMs = 8_000) {
+    const startedAt = Date.now();
+    while (Date.now() - startedAt < timeoutMs) {
+      const element = find();
+      if (element) return element;
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+    return null;
+  }
+
+  function showToast(message, isError = false) {
+    document.querySelector(".inbox-triage-toast")?.remove();
+    const toast = make("div", `inbox-triage-toast${isError ? " inbox-triage-toast-error" : ""}`, message);
+    toast.setAttribute("role", "status");
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add("inbox-triage-toast-visible"));
+    setTimeout(() => {
+      toast.classList.remove("inbox-triage-toast-visible");
+      setTimeout(() => toast.remove(), 180);
+    }, 4_000);
+  }
+
+  async function openEmailAndInsertReply(row, body) {
+    clearTimeout(hoverTimer);
+    clearTimeout(hideTimer);
+    activeRow = null;
+    requestNumber += 1;
+    hideCard();
+
+    const target = row.querySelector(".bog") || row;
+    if (target instanceof HTMLElement) target.click();
+
+    const replyButton = await waitForElement(() => {
+      const candidates = document.querySelectorAll('[role="button"], button');
+      return Array.from(candidates).filter((candidate) => {
+        if (!isVisible(candidate)) return false;
+        const label = candidate.getAttribute("aria-label") || candidate.getAttribute("title") || candidate.textContent || "";
+        return /^reply(?: to [^,]+)?$/i.test(label.trim());
+      }).at(-1) || null;
+    });
+
+    if (!(replyButton instanceof HTMLElement)) {
+      showToast("Open the message and use Draft reply in the Inbox Triage sidebar.", true);
+      return;
+    }
+    replyButton.click();
+
+    const composer = await waitForElement(() => {
+      const candidates = document.querySelectorAll('.Am.Al.editable[contenteditable="true"], [contenteditable="true"][role="textbox"]');
+      return Array.from(candidates).filter(isVisible).at(-1) || null;
+    });
+
+    if (!(composer instanceof HTMLElement)) {
+      showToast("Gmail opened the reply, but the draft could not be inserted. Please paste it manually.", true);
+      return;
+    }
+
+    composer.focus();
+    const inserted = document.execCommand("insertText", false, body);
+    if (!inserted || !composer.textContent?.trim()) {
+      composer.textContent = body;
+      composer.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: body }));
+    }
+    showToast("Reply inserted. Review it, then press Gmail’s Send button.");
+  }
+
+  async function requestQuickReply(row, payload, triageResult) {
+    const currentRequest = ++requestNumber;
+    renderReplyLoading(row);
+
+    try {
+      const response = await chrome.runtime.sendMessage({ type: "INBOX_TRIAGE_QUICK_REPLY", payload });
+      if (currentRequest !== requestNumber || row !== activeRow) return;
+      if (!response?.ok || !response.data?.body) throw new Error(response?.error || "Quick reply failed.");
+      renderReplyDraft(row, payload, triageResult, response.data);
+    } catch {
+      if (currentRequest !== requestNumber || row !== activeRow) return;
+      renderReplyError(row, payload, triageResult);
+    }
   }
 
   async function requestAnalysis(row, payload) {

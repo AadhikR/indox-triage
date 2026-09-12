@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Inbox Triage Hover",
-  "description": "Shows a fast attention preview when you hover over a Gmail inbox row.",
-  "version": "0.1.0",
+  "description": "Shows attention previews and editable AI quick replies inside Gmail.",
+  "version": "0.2.0",
   "permissions": ["storage"],
   "host_permissions": [
     "https://mail.google.com/*",

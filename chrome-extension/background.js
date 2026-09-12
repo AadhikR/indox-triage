@@ -1,4 +1,5 @@
 const API_URL = "http://localhost:3000/api/hover-triage";
+const REPLY_API_URL = "http://localhost:3000/api/hover-reply";
 const CACHE_KEY = "inboxTriageHoverCacheV3";
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const CACHE_LIMIT = 80;
@@ -46,14 +47,32 @@ async function analyzeHover(payload) {
   return { ok: true, data, cached: false };
 }
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (!message || message.type !== "INBOX_TRIAGE_HOVER") return false;
+async function draftQuickReply(payload) {
+  const response = await fetch(REPLY_API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
-  analyzeHover(message.payload)
+  if (!response.ok) throw new Error(`Inbox Triage returned ${response.status}.`);
+  return { ok: true, data: await response.json() };
+}
+
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (!message) return false;
+
+  const operation = message.type === "INBOX_TRIAGE_HOVER"
+    ? analyzeHover
+    : message.type === "INBOX_TRIAGE_QUICK_REPLY"
+      ? draftQuickReply
+      : null;
+  if (!operation) return false;
+
+  operation(message.payload)
     .then(sendResponse)
     .catch((error) => sendResponse({
       ok: false,
-      error: error instanceof Error ? error.message : "Hover analysis failed.",
+      error: error instanceof Error ? error.message : "Inbox Triage request failed.",
     }));
 
   return true;

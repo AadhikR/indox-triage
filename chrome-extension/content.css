@@ -4,7 +4,7 @@
   z-index: 2147483647;
   box-sizing: border-box;
   max-width: calc(100vw - 24px);
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid rgba(60, 64, 67, .12);
   border-radius: 18px;
   padding: 16px;
@@ -185,6 +185,123 @@
   cursor: pointer;
   font: inherit;
   font-weight: 600;
+}
+
+.inbox-triage-hover-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+}
+
+.inbox-triage-hover-quick,
+.inbox-triage-hover-secondary,
+.inbox-triage-hover-primary {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+}
+
+.inbox-triage-hover-quick {
+  padding: 5px 7px;
+  color: #1d1d1f;
+  background: #f2f2f7;
+}
+
+.inbox-triage-hover-quick:hover,
+.inbox-triage-hover-secondary:hover {
+  background: #e5e5ea;
+}
+
+.inbox-triage-hover-editor {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #d8d8dc;
+  border-radius: 12px;
+  margin-top: 14px;
+  padding: 11px 12px;
+  color: #1d1d1f;
+  background: #fafafa;
+  font: 12px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  outline: none;
+}
+
+.inbox-triage-hover-editor:focus {
+  border-color: #0071e3;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, .12);
+}
+
+.inbox-triage-hover-note,
+.inbox-triage-hover-reply-status {
+  margin: 8px 0 0;
+  color: #8e8e93;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.inbox-triage-hover-reply-status:not(:empty) {
+  color: #d70015;
+}
+
+.inbox-triage-hover-reply-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.inbox-triage-hover-secondary,
+.inbox-triage-hover-primary {
+  padding: 8px 10px;
+}
+
+.inbox-triage-hover-secondary {
+  color: #3a3a3c;
+  background: #f2f2f7;
+}
+
+.inbox-triage-hover-primary {
+  color: #fff;
+  background: #0071e3;
+}
+
+.inbox-triage-hover-primary:hover {
+  background: #0077ed;
+}
+
+.inbox-triage-hover-primary:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.inbox-triage-toast {
+  position: fixed;
+  z-index: 2147483647;
+  right: 24px;
+  bottom: 24px;
+  max-width: min(380px, calc(100vw - 48px));
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #fff;
+  background: rgba(29, 29, 31, .96);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .24);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  font: 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.inbox-triage-toast-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.inbox-triage-toast-error {
+  background: rgba(190, 30, 45, .96);
 }
 
 .inbox-triage-hover-open:hover {
