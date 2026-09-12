@@ -851,46 +851,38 @@ function buildTriageCard(message, thread, messages, analysis) {
   var status = getAnalysisStatus(analysis.source);
   var header = CardService.newCardHeader()
     .setTitle("Inbox Triage")
-    .setSubtitle(messages.length + (messages.length === 1 ? " message" : " messages") + " analyzed in this thread");
+    .setSubtitle(analysis.label + " · " + messages.length + (messages.length === 1 ? " message" : " messages"))
+    .setImageUrl("https://raw.githubusercontent.com/AadhikR/indox-triage/main/public/favicon.svg")
+    .setImageAltText("Inbox Triage")
+    .setImageStyle(CardService.ImageStyle.SQUARE);
 
-  var prioritySection = CardService.newCardSection()
-    .setHeader("ATTENTION LEVEL")
+  var overviewSection = CardService.newCardSection()
     .addWidget(
       CardService.newDecoratedText()
-        .setText("<font color=\"" + analysis.color + "\"><b>● " + escapeCardText(analysis.label) + "</b></font>")
-        .setBottomLabel(escapeCardText(analysis.reason))
+        .setTopLabel("ATTENTION")
+        .setText("<font color=\"" + analysis.color + "\"><b>● &nbsp;" + escapeCardText(analysis.label) + "</b></font>")
+        .setBottomLabel("Based on the complete visible thread")
         .setWrapText(true)
     )
     .addWidget(
-      CardService.newDecoratedText()
-        .setTopLabel("SYSTEM STATUS")
-        .setText("<font color=\"" + status.color + "\"><b>" + escapeCardText(status.label) + "</b></font>")
-        .setBottomLabel(escapeCardText(status.detail))
-        .setWrapText(true)
-    );
-
-  var contextSection = CardService.newCardSection()
-    .setHeader("THREAD CONTEXT")
-    .addWidget(
-      CardService.newDecoratedText()
-        .setTopLabel("SUBJECT")
-        .setText(escapeCardText(message.getSubject() || "(No subject)"))
-        .setWrapText(true)
+      CardService.newTextParagraph().setText(
+        "<b>" + escapeCardText(analysis.summary) + "</b>"
+      )
     )
     .addWidget(
       CardService.newDecoratedText()
-        .setTopLabel("LATEST SENDER")
-        .setText(escapeCardText(message.getFrom()))
+        .setTopLabel("WHY IT MATTERS")
+        .setText(escapeCardText(analysis.reason))
         .setWrapText(true)
-    )
-    .addWidget(
-      CardService.newTextParagraph().setText(escapeCardText(analysis.summary))
     );
 
   var actionSection = CardService.newCardSection()
-    .setHeader("RECOMMENDED NEXT ACTION")
+    .setHeader("Next move")
     .addWidget(
-      CardService.newTextParagraph().setText(escapeCardText(analysis.action))
+      CardService.newDecoratedText()
+        .setTopLabel("SUGGESTED ACTION")
+        .setText("<b>" + escapeCardText(analysis.action) + "</b>")
+        .setWrapText(true)
     );
 
   if (analysis.deadline && analysis.deadline.toLowerCase() !== "none detected") {
@@ -948,9 +940,26 @@ function buildTriageCard(message, thread, messages, analysis) {
         .addButton(openThreadButton)
     )
     .addWidget(
+      CardService.newTextParagraph().setText(
+        "<font color=\"#6e6e73\">Draft opens in Gmail for review · never auto-sends</font>"
+      )
+    );
+
+  var contextSection = CardService.newCardSection()
+    .setHeader("Thread details")
+    .setCollapsible(true)
+    .setNumUncollapsibleWidgets(0)
+    .addWidget(
       CardService.newDecoratedText()
-        .setTopLabel("USER CONTROL")
-        .setText("Drafts open in Gmail for your review. Inbox Triage never sends automatically.")
+        .setTopLabel("SUBJECT")
+        .setText(escapeCardText(message.getSubject() || "(No subject)"))
+        .setWrapText(true)
+    )
+    .addWidget(
+      CardService.newDecoratedText()
+        .setTopLabel("LATEST SENDER")
+        .setText(escapeCardText(message.getFrom()))
+        .setBottomLabel(messages.length + (messages.length === 1 ? " message in thread" : " messages in thread"))
         .setWrapText(true)
     );
 
@@ -967,20 +976,31 @@ function buildTriageCard(message, thread, messages, analysis) {
     );
 
   var learningSection = CardService.newCardSection()
-    .setHeader("TEACH INBOX TRIAGE")
+    .setHeader("Personalize")
+    .setCollapsible(true)
+    .setNumUncollapsibleWidgets(0)
     .addWidget(correctionInput)
     .addWidget(
       CardService.newTextParagraph().setText(
-        "Your correction is saved privately and used as a bounded preference example in future analysis."
+        "Saved privately as a bounded preference example for future analysis."
       )
+    );
+
+  var statusSection = CardService.newCardSection()
+    .addWidget(
+      CardService.newDecoratedText()
+        .setText("<font color=\"" + status.color + "\"><b>✓ &nbsp;" + escapeCardText(status.label) + "</b></font>")
+        .setBottomLabel(escapeCardText(status.detail))
+        .setWrapText(true)
     );
 
   return CardService.newCardBuilder()
     .setHeader(header)
-    .addSection(prioritySection)
-    .addSection(contextSection)
+    .addSection(overviewSection)
     .addSection(actionSection)
+    .addSection(contextSection)
     .addSection(learningSection)
+    .addSection(statusSection)
     .build();
 }
 

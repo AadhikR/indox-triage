@@ -94,6 +94,11 @@ assert.match(sandbox.generateReplyDraft(context("Example")), /Thanks for your em
 assert.equal(typeof sandbox.createAiReplyDraft, "function");
 assert.match(source, /setComposeAction\(/);
 assert.match(source, /ComposedEmailType\.REPLY_AS_DRAFT/);
+assert.match(source, /setHeader\("Next move"\)/);
+assert.match(source, /setHeader\("Thread details"\)/);
+assert.match(source, /setHeader\("Personalize"\)/);
+assert.match(source, /setCollapsible\(true\)/);
+assert.match(source, /setImageAltText\("Inbox Triage"\)/);
 assert.ok(manifest.oauthScopes.includes("https://www.googleapis.com/auth/gmail.addons.current.action.compose"));
 assert.equal(manifest.addOns.common.name, "Inbox Triage");
 assert.equal(typeof sandbox.resetIndoxAuthorization, "function");
