@@ -30,9 +30,17 @@ export default async function LoginPage() {
 
         {auth0Configured ? (
           <>
-            <a className="button button-primary button-full" href="/auth/login?returnTo=/dashboard">
-              Continue with Auth0 <span aria-hidden="true">→</span>
-            </a>
+            <div className="auth-actions">
+              <a className="button button-primary button-full" href="/auth/login?returnTo=/dashboard">
+                Log in with Auth0 <span aria-hidden="true">→</span>
+              </a>
+              <a
+                className="button button-secondary button-full"
+                href="/auth/login?screen_hint=signup&returnTo=/dashboard"
+              >
+                Create an account
+              </a>
+            </div>
             <p className="login-footnote">Protected by Auth0 Universal Login.</p>
           </>
         ) : (
